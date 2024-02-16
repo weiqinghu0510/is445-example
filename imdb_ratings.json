@@ -1,0 +1,46 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "data": { "url": "https://vega.github.io/editor/data/movies.json" },
+    "hconcat": [
+        {
+            "layer": [
+                {
+                    "mark": "bar",
+                    "encoding": {
+                        "x": { "field": "IMDB Rating", "type": "quantitative", "bin": true },
+                        "y": {
+                            "field": "Worldwide Gross",
+                            "aggregate": "sum",
+                            "type": "quantitative"
+                        },
+                        "color": { "value": "grey" }
+                    }
+                },
+                {
+                    "mark": "bar",
+                    "transform": [{ "filter": { "param": "interesting_movies" } }],
+                    "encoding": {
+                        "x": { "field": "IMDB Rating", "type": "quantitative", "bin": true },
+                        "y": {
+                            "field": "Worldwide Gross",
+                            "aggregate": "sum",
+                            "type": "quantitative"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "mark": "point",
+            "params": [{ "name": "interesting_movies", "select": { "type": "point", "fields": ["MPAA Rating"] }, "bind": "legend" }],
+            "encoding": {
+                "x": { "field": "Production Budget", "type": "quantitative" },
+                "y": { "field": "Worldwide Gross", "type": "quantitative" },
+                "tooltip": { "field": "Title" },
+                "color": {
+                    "condition": { "param": "interesting_movies", "field": "MPAA Rating" }, "value": "grey"
+                }
+            }
+        }
+    ]
+}
